@@ -1,7 +1,7 @@
 import DatasetController from '../core/core.datasetController';
-import {clipArea, unclipArea} from '../helpers/helpers.canvas';
-import {isArray, isNullOrUndef, valueOrDefault, resolveObjectKey} from '../helpers/helpers.core';
-import {_limitValue, sign} from '../helpers/helpers.math';
+import { clipArea, unclipArea } from '../helpers/helpers.canvas';
+import { isArray, isNullOrUndef, valueOrDefault, resolveObjectKey } from '../helpers/helpers.core';
+import { _limitValue, sign } from '../helpers/helpers.math';
 
 /**
  * Computes the "optimal" sample size to maintain bars equally sized while preventing overlap.
@@ -170,8 +170,8 @@ export default class BarController extends DatasetController {
 	 * @protected
 	 */
 	parseObjectData(meta, data, start, count) {
-		const {iScale, vScale} = meta;
-		const {xAxisKey = 'x', yAxisKey = 'y'} = this._parsing;
+		const { iScale, vScale } = meta;
+		const { xAxisKey = 'x', yAxisKey = 'y' } = this._parsing;
 		const iAxisKey = iScale.axis === 'x' ? xAxisKey : yAxisKey;
 		const vAxisKey = vScale.axis === 'x' ? xAxisKey : yAxisKey;
 		const parsed = [];
@@ -204,7 +204,7 @@ export default class BarController extends DatasetController {
 	getLabelAndValue(index) {
 		const me = this;
 		const meta = me._cachedMeta;
-		const {iScale, vScale} = meta;
+		const { iScale, vScale } = meta;
 		const parsed = me.getParsed(index);
 		const custom = parsed._custom;
 		const value = isFloatBar(custom)
@@ -267,9 +267,15 @@ export default class BarController extends DatasetController {
 				model.borderSkipped = null;
 			}
 			*/
+			//TODO - IMPROVE THIS - BUG FIX
 			if (includeOptions) {
 				properties.options = options;
+			} else {
+				properties['options'] = {
+					backgroundColor: options.color
+				}
 			}
+
 			me.updateElement(rectangles[i], index, properties, mode);
 		}
 

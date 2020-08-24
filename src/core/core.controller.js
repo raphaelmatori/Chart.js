@@ -3,14 +3,14 @@ import animator from './core.animator';
 import defaults from './core.defaults';
 import Interaction from './core.interaction';
 import layouts from './core.layouts';
-import {BasicPlatform, DomPlatform} from '../platform';
+import { BasicPlatform, DomPlatform } from '../platform';
 import PluginService from './core.plugins';
 import registry from './core.registry';
-import {getMaximumWidth, getMaximumHeight, retinaScale} from '../helpers/helpers.dom';
-import {mergeIf, merge, _merger, each, callback as callCallback, uid, valueOrDefault, _elementsEqual} from '../helpers/helpers.core';
-import {clear as canvasClear, clipArea, unclipArea, _isPointInArea} from '../helpers/helpers.canvas';
+import { getMaximumWidth, getMaximumHeight, retinaScale } from '../helpers/helpers.dom';
+import { mergeIf, merge, _merger, each, callback as callCallback, uid, valueOrDefault, _elementsEqual } from '../helpers/helpers.core';
+import { clear as canvasClear, clipArea, unclipArea, _isPointInArea } from '../helpers/helpers.canvas';
 // @ts-ignore
-import {version} from '../../package.json';
+import { version } from '../../package.json';
 
 /**
  * @typedef { import("../platform/platform.base").IEvent } IEvent
@@ -41,7 +41,7 @@ function getDefaultScaleIDFromAxis(axis, indexAxis) {
 
 function mergeScaleConfig(config, options) {
 	options = options || {};
-	const chartDefaults = defaults[config.type] || {scales: {}};
+	const chartDefaults = defaults[config.type] || { scales: {} };
 	const configScales = options.scales || {};
 	const chartIndexAxis = getIndexAxis(config.type, options);
 	const firstIDs = {};
@@ -53,12 +53,12 @@ function mergeScaleConfig(config, options) {
 		const axis = determineAxis(id, scaleConf);
 		const defaultId = getDefaultScaleIDFromAxis(axis, chartIndexAxis);
 		firstIDs[axis] = firstIDs[axis] || id;
-		scales[id] = mergeIf({axis}, [scaleConf, chartDefaults.scales[axis], chartDefaults.scales[defaultId]]);
+		scales[id] = mergeIf({ axis }, [scaleConf, chartDefaults.scales[axis], chartDefaults.scales[defaultId]]);
 	});
 
 	// Backward compatibility
 	if (options.scale) {
-		scales[options.scale.id || 'r'] = mergeIf({axis: 'r'}, [options.scale, chartDefaults.scales.r]);
+		scales[options.scale.id || 'r'] = mergeIf({ axis: 'r' }, [options.scale, chartDefaults.scales.r]);
 		firstIDs.r = firstIDs.r || options.scale.id || 'r';
 	}
 
@@ -72,7 +72,7 @@ function mergeScaleConfig(config, options) {
 			const axis = getAxisFromDefaultScaleID(defaultID, indexAxis);
 			const id = dataset[axis + 'AxisID'] || firstIDs[axis] || axis;
 			scales[id] = scales[id] || {};
-			mergeIf(scales[id], [{axis}, configScales[id], defaultScaleOptions[defaultID]]);
+			mergeIf(scales[id], [{ axis }, configScales[id], defaultScaleOptions[defaultID]]);
 		});
 	});
 
@@ -105,7 +105,7 @@ function initConfig(config) {
 
 	// Do NOT use mergeConfig for the data object because this method merges arrays
 	// and so would change references to labels and datasets, preventing data updates.
-	const data = config.data = config.data || {datasets: [], labels: []};
+	const data = config.data = config.data || { datasets: [], labels: [] };
 	data.datasets = data.datasets || [];
 	data.labels = data.labels || [];
 
@@ -170,7 +170,7 @@ function determineAxis(id, scaleOptions) {
 }
 
 function compare2Level(l1, l2) {
-	return function(a, b) {
+	return function (a, b) {
 		return a[l1] === b[l1]
 			? a[l2] - b[l2]
 			: a[l1] - b[l1];
@@ -676,7 +676,7 @@ class Chart {
 		}
 
 		for (let i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
-			me._updateDataset(i, isFunction ? mode({datasetIndex: i}) : mode);
+			me._updateDataset(i, isFunction ? mode({ datasetIndex: i }) : mode);
 		}
 
 		me._plugins.notify(me, 'afterDatasetsUpdate');
@@ -690,7 +690,7 @@ class Chart {
 	_updateDataset(index, mode) {
 		const me = this;
 		const meta = me.getDatasetMeta(index);
-		const args = {meta, index, mode};
+		const args = { meta, index, mode };
 
 		if (me._plugins.notify(me, 'beforeDatasetUpdate', [args]) === false) {
 			return;
@@ -707,7 +707,7 @@ class Chart {
 		if (me._plugins.notify(me, 'beforeRender') === false) {
 			return;
 		}
-		const onComplete = function() {
+		const onComplete = function () {
 			me._plugins.notify(me, 'afterRender');
 			callCallback(animationOptions && animationOptions.onComplete, [], me);
 		};
@@ -839,15 +839,15 @@ class Chart {
 	 * @return An object containing the dataset index and element index of the matching element. Also contains the rectangle that was draw
 	 */
 	getElementAtEvent(e) {
-		return Interaction.modes.nearest(this, e, {intersect: true});
+		return Interaction.modes.nearest(this, e, { intersect: true });
 	}
 
 	getElementsAtEvent(e) {
-		return Interaction.modes.index(this, e, {intersect: true});
+		return Interaction.modes.index(this, e, { intersect: true });
 	}
 
 	getElementsAtXAxis(e) {
-		return Interaction.modes.index(this, e, {intersect: false});
+		return Interaction.modes.index(this, e, { intersect: false });
 	}
 
 	getElementsAtEventForMode(e, mode, options, useFinalPosition) {
@@ -860,7 +860,7 @@ class Chart {
 	}
 
 	getDatasetAtEvent(e) {
-		return Interaction.modes.dataset(this, e, {intersect: true});
+		return Interaction.modes.dataset(this, e, { intersect: true });
 	}
 
 	getDatasetMeta(datasetIndex) {
@@ -925,7 +925,7 @@ class Chart {
 		me.setDatasetVisibility(datasetIndex, visible);
 
 		// Animate visible state, so hide animation can be seen. This could be handled better if update / updateDataset returned a Promise.
-		anims.update(meta, {visible});
+		anims.update(meta, { visible });
 
 		me.update((ctx) => ctx.datasetIndex === datasetIndex ? mode : undefined);
 	}
@@ -1000,7 +1000,7 @@ class Chart {
 			}
 		};
 
-		let listener = function(e) {
+		let listener = function (e) {
 			me._eventHandler(e);
 		};
 

@@ -1,9 +1,9 @@
 import Animations from './core.animations';
-import {isObject, merge, _merger, isArray, valueOrDefault, mergeIf, resolveObjectKey, _capitalize} from '../helpers/helpers.core';
-import {listenArrayEvents, unlistenArrayEvents} from '../helpers/helpers.collection';
-import {resolve} from '../helpers/helpers.options';
-import {getHoverColor} from '../helpers/helpers.color';
-import {sign} from '../helpers/helpers.math';
+import { isObject, merge, _merger, isArray, valueOrDefault, mergeIf, resolveObjectKey, _capitalize } from '../helpers/helpers.core';
+import { listenArrayEvents, unlistenArrayEvents } from '../helpers/helpers.collection';
+import { resolve } from '../helpers/helpers.options';
+import { getHoverColor } from '../helpers/helpers.color';
+import { sign } from '../helpers/helpers.math';
 
 /**
  * @typedef { import("./core.controller").default } Chart
@@ -111,7 +111,7 @@ function getStackKey(indexScale, valueScale, meta) {
 }
 
 function getUserBounds(scale) {
-	const {min, max, minDefined, maxDefined} = scale.getUserBounds();
+	const { min, max, minDefined, maxDefined } = scale.getUserBounds();
 	return {
 		min: minDefined ? min : Number.NEGATIVE_INFINITY,
 		max: maxDefined ? max : Number.POSITIVE_INFINITY
@@ -124,9 +124,9 @@ function getOrCreateStack(stacks, stackKey, indexValue) {
 }
 
 function updateStacks(controller, parsed) {
-	const {chart, _cachedMeta: meta} = controller;
+	const { chart, _cachedMeta: meta } = controller;
 	const stacks = chart._stacks || (chart._stacks = {}); // map structure is {stackKey: {datasetIndex: value}}
-	const {iScale, vScale, index: datasetIndex} = meta;
+	const { iScale, vScale, index: datasetIndex } = meta;
 	const iAxis = iScale.axis;
 	const vAxis = vScale.axis;
 	const key = getStackKey(iScale, vScale, meta);
@@ -135,7 +135,7 @@ function updateStacks(controller, parsed) {
 
 	for (let i = 0; i < ilen; ++i) {
 		const item = parsed[i];
-		const {[iAxis]: index, [vAxis]: value} = item;
+		const { [iAxis]: index, [vAxis]: value } = item;
 		const itemStacks = item._stacks || (item._stacks = {});
 		stack = itemStacks[vAxis] = getOrCreateStack(stacks, key, index);
 		stack[datasetIndex] = value;
@@ -351,8 +351,8 @@ export default class DatasetController {
 	 */
 	parse(start, count) {
 		const me = this;
-		const {_cachedMeta: meta, _data: data} = me;
-		const {iScale, vScale, _stacked} = meta;
+		const { _cachedMeta: meta, _data: data } = me;
+		const { iScale, vScale, _stacked } = meta;
 		const iAxis = iScale.axis;
 		let sorted = true;
 		let i, parsed, cur, prev;
@@ -407,7 +407,7 @@ export default class DatasetController {
 	 * @protected
 	 */
 	parsePrimitiveData(meta, data, start, count) {
-		const {iScale, vScale} = meta;
+		const { iScale, vScale } = meta;
 		const iAxis = iScale.axis;
 		const vAxis = vScale.axis;
 		const labels = iScale.getLabels();
@@ -437,7 +437,7 @@ export default class DatasetController {
 	 * @protected
 	 */
 	parseArrayData(meta, data, start, count) {
-		const {xScale, yScale} = meta;
+		const { xScale, yScale } = meta;
 		const parsed = new Array(count);
 		let i, ilen, index, item;
 
@@ -464,8 +464,8 @@ export default class DatasetController {
 	 * @protected
 	 */
 	parseObjectData(meta, data, start, count) {
-		const {xScale, yScale} = meta;
-		const {xAxisKey = 'x', yAxisKey = 'y'} = this._parsing;
+		const { xScale, yScale } = meta;
+		const { xAxisKey = 'x', yAxisKey = 'y' } = this._parsing;
 		const parsed = new Array(count);
 		let i, ilen, index, item;
 
@@ -529,9 +529,9 @@ export default class DatasetController {
 		const sorted = meta._sorted && scale === meta.iScale;
 		const ilen = _parsed.length;
 		const otherScale = me._getOtherScale(scale);
-		const stack = canStack && meta._stacked && {keys: getSortedDatasetIndices(me.chart, true), values: null};
-		const range = {min: Number.POSITIVE_INFINITY, max: Number.NEGATIVE_INFINITY};
-		const {min: otherMin, max: otherMax} = getUserBounds(otherScale);
+		const stack = canStack && meta._stacked && { keys: getSortedDatasetIndices(me.chart, true), values: null };
+		const range = { min: Number.POSITIVE_INFINITY, max: Number.NEGATIVE_INFINITY };
+		const { min: otherMin, max: otherMax } = getUserBounds(otherScale);
 		let i, value, parsed, otherValue;
 
 		function _skip() {
@@ -617,7 +617,7 @@ export default class DatasetController {
 	/**
 	 * @param {string} mode
 	 */
-	update(mode) {} // eslint-disable-line no-unused-vars
+	update(mode) { } // eslint-disable-line no-unused-vars
 
 	draw() {
 		const me = this;
@@ -724,7 +724,7 @@ export default class DatasetController {
 		if (cached[mode]) {
 			return cached[mode];
 		}
-		const info = {cacheable: !active};
+		const info = { cacheable: !active };
 
 		const values = me._resolveOptions(me.dataElementOptions, {
 			index,
@@ -752,7 +752,7 @@ export default class DatasetController {
 	 */
 	_resolveOptions(optionNames, args) {
 		const me = this;
-		const {index, active, type, info} = args;
+		const { index, active, type, info } = args;
 		const datasetOpts = me._config;
 		const options = me.chart.options.elements[type] || {};
 		const values = {};
@@ -789,7 +789,7 @@ export default class DatasetController {
 			return cached[mode];
 		}
 
-		const info = {cacheable: true};
+		const info = { cacheable: true };
 		const context = me._getContext(index, active);
 		const datasetAnim = resolve([me._config.animation], context, index, info);
 		const chartAnim = resolve([chart.options.animation], context, index, info);
@@ -813,12 +813,13 @@ export default class DatasetController {
 	 * @protected
 	 */
 	getSharedOptions(mode, el, options) {
+		console.log(mode,options);
 		if (!mode) {
 			// store element option sharing status for usage in interactions
 			this._sharedOptions = options && options.$shared;
 		}
 		if (mode !== 'reset' && options && options.$shared && el && el.options && el.options.$shared) {
-			return {target: el.options, options};
+			return { target: el.options, options };
 		}
 	}
 
@@ -860,7 +861,7 @@ export default class DatasetController {
 	 */
 	_setStyle(element, index, mode, active) {
 		element.active = active;
-		this._resolveAnimations(index, mode, active).update(element, {options: this.getStyle(index, active)});
+		this._resolveAnimations(index, mode, active).update(element, { options: this.getStyle(index, active) });
 	}
 
 	removeHoverStyle(element, datasetIndex, index) {
@@ -935,7 +936,7 @@ export default class DatasetController {
 		me.updateElements(elements, start, 'reset');
 	}
 
-	updateElements(element, start, mode) {} // eslint-disable-line no-unused-vars
+	updateElements(element, start, mode) { } // eslint-disable-line no-unused-vars
 
 	/**
 	 * @private

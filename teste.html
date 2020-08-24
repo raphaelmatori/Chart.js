@@ -1,0 +1,63 @@
+<html>
+<style>
+    .myChartDiv {
+        max-width: 600px;
+        max-height: 400px;
+    }
+</style>
+<script type="text/javascript" src="./dist/chart.js"></script>
+
+<body>
+    <div class="myChartDiv">
+        <canvas id="myChart" width="600" height="400"></canvas>
+    </div>
+    <button id="changeColor">Change dataset color</button>
+</body>
+
+
+<script>
+    var ctx = document.getElementById("myChart");
+    var color = 'red';
+    var myPlugin = {
+        id: 'changecolor',
+        beforeUpdate: function (chart) {
+            chart.data.datasets.forEach(function (dataset) {
+                dataset.backgroundColor = color;
+            });
+            return true;
+        }
+    };
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        plugins: [myPlugin],
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+            datasets: [{
+                label: 'dataset',
+                backgroundColor: color,
+                borderColor: "red",
+                data: [120, 23, 24, 45, 51]
+            }]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                display: true
+            },
+            title: {
+                display: true,
+                text: "Line chart"
+            },
+        }
+    });
+    document.getElementById('changeColor').addEventListener('click', function () {
+        if (color === "red") {
+            color = "blue";
+        } else {
+            color = "red";
+        }
+        myChart.update();
+    });
+</script>
+
+</html>

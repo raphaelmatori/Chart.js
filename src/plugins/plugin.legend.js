@@ -1,10 +1,10 @@
 import defaults from '../core/core.defaults';
 import Element from '../core/core.element';
 import layouts from '../core/core.layouts';
-import {drawPoint} from '../helpers/helpers.canvas';
-import {callback as call, merge, valueOrDefault, isNullOrUndef} from '../helpers/helpers.core';
-import {toFont, toPadding} from '../helpers/helpers.options';
-import {getRtlAdapter, overrideTextDirection, restoreTextDirection} from '../helpers/helpers.rtl';
+import { drawPoint } from '../helpers/helpers.canvas';
+import { callback as call, merge, valueOrDefault, isNullOrUndef } from '../helpers/helpers.core';
+import { toFont, toPadding } from '../helpers/helpers.options';
+import { getRtlAdapter, overrideTextDirection, restoreTextDirection } from '../helpers/helpers.rtl';
 
 /**
  * @typedef { import("../platform/platform.base").IEvent } IEvent
@@ -17,7 +17,7 @@ import {getRtlAdapter, overrideTextDirection, restoreTextDirection} from '../hel
  * @return {number} width of the color box area
  */
 function getBoxWidth(labelOpts, fontSize) {
-	const {boxWidth} = labelOpts;
+	const { boxWidth } = labelOpts;
 	return (labelOpts.usePointStyle && boxWidth > fontSize) || isNullOrUndef(boxWidth) ?
 		fontSize :
 		boxWidth;
@@ -30,7 +30,7 @@ function getBoxWidth(labelOpts, fontSize) {
  * @return {number} height of the color box area
  */
 function getBoxHeight(labelOpts, fontSize) {
-	const {boxHeight} = labelOpts;
+	const { boxHeight } = labelOpts;
 	return (labelOpts.usePointStyle && boxHeight > fontSize) || isNullOrUndef(boxHeight) ?
 		fontSize :
 		boxHeight;
@@ -84,7 +84,7 @@ export class Legend extends Element {
 	// Any function defined here is inherited by all legend types.
 	// Any function can be extended by the legend type
 
-	beforeUpdate() {}
+	beforeUpdate() { }
 
 	update(maxWidth, maxHeight, margins) {
 		const me = this;
@@ -114,9 +114,9 @@ export class Legend extends Element {
 		me.afterUpdate();
 	}
 
-	afterUpdate() {}
+	afterUpdate() { }
 
-	beforeSetDimensions() {}
+	beforeSetDimensions() { }
 
 	setDimensions() {
 		const me = this;
@@ -147,9 +147,9 @@ export class Legend extends Element {
 		};
 	}
 
-	afterSetDimensions() {}
+	afterSetDimensions() { }
 
-	beforeBuildLabels() {}
+	beforeBuildLabels() { }
 
 	buildLabels() {
 		const me = this;
@@ -167,9 +167,9 @@ export class Legend extends Element {
 		me.legendItems = legendItems;
 	}
 
-	afterBuildLabels() {}
+	afterBuildLabels() { }
 
-	beforeFit() {}
+	beforeFit() { }
 
 	fit() {
 		const me = this;
@@ -279,7 +279,7 @@ export class Legend extends Element {
 		me.height = minSize.height;
 	}
 
-	afterFit() {}
+	afterFit() { }
 
 	// Shared Methods
 	isHorizontal() {
@@ -323,7 +323,7 @@ export class Legend extends Element {
 		const hitboxes = me.legendHitBoxes;
 
 		// current position
-		const drawLegendBox = function(x, y, legendItem) {
+		const drawLegendBox = function (x, y, legendItem) {
 			if (isNaN(boxWidth) || boxWidth <= 0 || isNaN(boxHeight) || boxHeight < 0) {
 				return;
 			}
@@ -372,7 +372,7 @@ export class Legend extends Element {
 			ctx.restore();
 		};
 
-		const fillText = function(x, y, legendItem, textWidth) {
+		const fillText = function (x, y, legendItem, textWidth) {
 			const halfFontSize = fontSize / 2;
 			const xLeft = rtlHelper.xPlus(x, boxWidth + halfFontSize);
 			const yMiddle = y + (height / 2);
@@ -388,14 +388,14 @@ export class Legend extends Element {
 			}
 		};
 
-		const alignmentOffset = function(dimension, blockSize) {
+		const alignmentOffset = function (dimension, blockSize) {
 			switch (opts.align) {
-			case 'start':
-				return labelOpts.padding;
-			case 'end':
-				return dimension - blockSize;
-			default: // center
-				return (dimension - blockSize + labelOpts.padding) / 2;
+				case 'start':
+					return labelOpts.padding;
+				case 'end':
+					return dimension - blockSize;
+				default: // center
+					return (dimension - blockSize + labelOpts.padding) / 2;
 			}
 		};
 
@@ -493,47 +493,47 @@ export class Legend extends Element {
 			// Move left / right so that the title is above the legend lines
 			maxWidth = Math.max(...me.lineWidths);
 			switch (opts.align) {
-			case 'start':
-				// left is already correct in this case
-				break;
-			case 'end':
-				left = me.right - maxWidth;
-				break;
-			default:
-				left = ((me.left + me.right) / 2) - (maxWidth / 2);
-				break;
+				case 'start':
+					// left is already correct in this case
+					break;
+				case 'end':
+					left = me.right - maxWidth;
+					break;
+				default:
+					left = ((me.left + me.right) / 2) - (maxWidth / 2);
+					break;
 			}
 		} else {
 			// Move down so that the title is above the legend stack in every alignment
 			const maxHeight = Math.max(...me.columnHeights);
 			switch (opts.align) {
-			case 'start':
-				// y is already correct in this case
-				break;
-			case 'end':
-				y += me.height - maxHeight;
-				break;
-			default: // center
-				y += (me.height - maxHeight) / 2;
-				break;
+				case 'start':
+					// y is already correct in this case
+					break;
+				case 'end':
+					y += me.height - maxHeight;
+					break;
+				default: // center
+					y += (me.height - maxHeight) / 2;
+					break;
 			}
 		}
 
 		// Now that we know the left edge of the inner legend box, compute the correct
 		// X coordinate from the title alignment
 		switch (position) {
-		case 'start':
-			x = left;
-			textAlign = 'left';
-			break;
-		case 'end':
-			x = left + maxWidth;
-			textAlign = 'right';
-			break;
-		default:
-			x = left + (maxWidth / 2);
-			textAlign = 'center';
-			break;
+			case 'start':
+				x = left;
+				textAlign = 'left';
+				break;
+			case 'end':
+				x = left + maxWidth;
+				textAlign = 'right';
+				break;
+			default:
+				x = left + (maxWidth / 2);
+				textAlign = 'center';
+				break;
 		}
 
 		// Canvas setup
